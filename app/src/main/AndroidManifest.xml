@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.code.lengjiye.lengjiyecodelibrary">
+    package="com.lengjiye.code">
 
     <!-- 应用权限列表 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -33,7 +33,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
     <!-- 以下两行为小米推送的权限，permission之前的部分必须为当前App的包名 -->
-
 
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -81,7 +80,6 @@
     <!-- for 蓝牙 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
@@ -99,6 +97,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.DeviceInformationActivity"></activity>
+        <activity android:name=".activity.NotificationActivity"></activity>
     </application>
 
 </manifest>

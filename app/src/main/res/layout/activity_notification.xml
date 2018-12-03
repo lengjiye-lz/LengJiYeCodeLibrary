@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lengjiye.code.activity.DeviceInformationActivity">
+    tools:context="com.lengjiye.code.activity.NotificationActivity">
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设备信息" />
+        android:text="发送通知" />
 
     <Button
         android:id="@+id/button1"
-        app:layout_constraintTop_toBottomOf="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="通知管理" />
+        android:text="是否显示通知"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 </android.support.constraint.ConstraintLayout>

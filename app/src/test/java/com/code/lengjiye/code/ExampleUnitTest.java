@@ -1,4 +1,4 @@
-package com.code.lengjiye.lengjiyecodelibrary;
+package com.code.lengjiye.code;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.code.lengjiye.lengjiyecodelibrary;
+package com.code.lengjiye.code;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

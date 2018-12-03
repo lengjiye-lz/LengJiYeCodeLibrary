@@ -1,4 +1,4 @@
-package com.code.lengjiye.lengjiyecodelibrary;
+package com.lengjiye.code.activity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -6,18 +6,19 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.TextView;
+
+import com.lengjiye.code.R;
+import com.lengjiye.code.base.BaseActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,17 +36,24 @@ import java.util.regex.Pattern;
 /**
  * @author liuzhuo
  */
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class DeviceInformationActivity extends BaseActivity implements SensorEventListener {
     private TextView text;
     private SensorManager sensorManager;
 
+    private OrientationEventListener mOrientationListener;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void initViews() {
+        super.initViews();
+
         text = findViewById(R.id.text);
         text.setMovementMethod(ScrollingMovementMethod.getInstance());
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+    }
+
+    @Override
+    protected void setListener() {
+        super.setListener();
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     text.setText("不是模拟器");
                 }
                 getInfo();
-                getScreenBrightness(MainActivity.this);
+                getScreenBrightness(DeviceInformationActivity.this);
+                String battery = getBatteryCapacity(DeviceInformationActivity.this);
+                text.append("电池容量：" + battery);
             }
         });
 
@@ -69,9 +79,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (handler != null) {
+                    handler.removeMessages(1);
+                }
                 getSensorList();
             }
         });
+
+        mOrientationListener = new OrientationEventListener(this,
+                SensorManager.SENSOR_DELAY_NORMAL) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+
+            }
+        };
+    }
+
+    @Override
+    public int getResourceId() {
+        return R.layout.activity_device_information;
     }
 
     Handler handler = new Handler() {
@@ -102,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //7	临近传感器	TYPE_PROXIMITY
         //8	湿度传感器	TYPE_RELATIVE_HUMIDITY
         //Sensor.TYPE_LIGHT 代表光照传感器
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
-
+//        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT), SensorManager.SENSOR_DELAY_NORMAL);
+//
         //注册加速度传感器
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -137,7 +164,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY),
                 SensorManager.SENSOR_DELAY_FASTEST);
         // 计步
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        // 方向传感器
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+                SensorManager.SENSOR_DELAY_FASTEST);
 
 
     }
@@ -288,6 +321,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         int battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
 
     }
+
+    /**
+     * 获取电池容量 mAh
+     * <p>
+     * 源头文件:frameworks/base/core/res\res/xml/power_profile.xml
+     * <p>
+     * Java 反射文件：frameworks\base\core\java\com\android\internal\os\PowerProfile.java
+     */
+    public String getBatteryCapacity(Context context) {
+        Object mPowerProfile;
+        double batteryCapacity = 0;
+        final String POWER_PROFILE_CLASS = "com.android.internal.os.PowerProfile";
+
+        try {
+            mPowerProfile = Class.forName(POWER_PROFILE_CLASS)
+                    .getConstructor(Context.class)
+                    .newInstance(context);
+
+            batteryCapacity = (double) Class
+                    .forName(POWER_PROFILE_CLASS)
+                    .getMethod("getBatteryCapacity")
+                    .invoke(mPowerProfile);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return String.valueOf(batteryCapacity + " mAh");
+    }
+
 
     /**
      * 获取温度信息
@@ -678,6 +741,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float lux_DETECTOR = sensorEvent.values[0];
                 Log.e("lz", "计步传感器:acc:" + acc_DETECTOR + ";" + "lux：" + lux_DETECTOR);
                 builder = ("\n" + "计步传感器:acc:" + acc_DETECTOR + ";" + "lux：" + lux_DETECTOR);
+                sensorManager.unregisterListener(this, sensorEvent.sensor);
+                break;
+            case Sensor.TYPE_ORIENTATION:
+                //获取精度
+                float acc_ORIENTATION = sensorEvent.accuracy;
+                //获取光线强度
+                float lux_ORIENTATION = sensorEvent.values[0];
+                Log.e("lz", "方向传感器:acc:" + acc_ORIENTATION + ";" + "lux：" + lux_ORIENTATION);
+                builder = ("\n" + "方向传感器:acc:" + acc_ORIENTATION + ";" + "lux：" + lux_ORIENTATION);
                 sensorManager.unregisterListener(this, sensorEvent.sensor);
                 break;
         }
