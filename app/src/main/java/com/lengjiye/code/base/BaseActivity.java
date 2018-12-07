@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.lengjiye.code.constants.NoDoubleClickProxy;
+
 import java.util.Locale;
 
 
@@ -160,7 +162,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         for (View v : views) {
             if (v == null)
                 continue;
-            v.setOnClickListener(this);
+            v.setOnClickListener(new NoDoubleClickProxy(this));
         }
     }
 }
