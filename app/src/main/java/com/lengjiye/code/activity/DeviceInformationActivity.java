@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.lengjiye.code.R;
 import com.lengjiye.code.base.BaseActivity;
+import com.lengjiye.tools.LogTool;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -91,9 +92,42 @@ public class DeviceInformationActivity extends BaseActivity implements SensorEve
 
             @Override
             public void onOrientationChanged(int orientation) {
+                if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                    // 手机平放时检测不到有效角度
+                    return;
+                }
+                LogTool.e("实时角度：" + orientation);
+                //可以根据不同角度检测处理，这里只检测四个角度的改变
+                if (orientation > 350 || orientation < 10) {
+                    // 0度
+                    orientation = 0;
+                } else if (orientation > 80 && orientation < 100) {
+                    // 90度
+                    orientation = 90;
+                } else if (orientation > 170 && orientation < 190) {
+                    // 180度
+                    orientation = 180;
+                } else if (orientation > 260 && orientation < 280) {
+                    // 270度
+                    orientation = 270;
+                } else {
+                    return;
+                }
 
+                LogTool.e("手机角度：" + orientation);
             }
         };
+
+        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mOrientationListener.canDetectOrientation()) {
+                    mOrientationListener.disable();
+                } else {
+                    mOrientationListener.enable();
+                }
+            }
+        });
     }
 
     @Override
@@ -765,5 +799,11 @@ public class DeviceInformationActivity extends BaseActivity implements SensorEve
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mOrientationListener.disable();
     }
 }

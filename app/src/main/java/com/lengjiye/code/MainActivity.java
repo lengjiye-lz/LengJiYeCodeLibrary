@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 
+import com.lengjiye.code.activity.AutoTestActivity;
 import com.lengjiye.code.activity.DeviceInformationActivity;
 import com.lengjiye.code.activity.NotificationActivity;
 import com.lengjiye.code.base.BaseActivity;
@@ -25,8 +26,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setListener() {
         super.setListener();
-        findViewById(R.id.button).setOnClickListener(this);
-        findViewById(R.id.button1).setOnClickListener(this);
+        setOnClickListener(findViewById(R.id.button), findViewById(R.id.button1), findViewById(R.id.button2));
         setNotificationChannel();
     }
 
@@ -40,6 +40,10 @@ public class MainActivity extends BaseActivity {
 
             case R.id.button1:
                 startActivity(new Intent(MainActivity.this, NotificationActivity.class));
+                break;
+
+            case R.id.button2:
+                startActivity(new Intent(MainActivity.this, AutoTestActivity.class));
                 break;
 
             default:

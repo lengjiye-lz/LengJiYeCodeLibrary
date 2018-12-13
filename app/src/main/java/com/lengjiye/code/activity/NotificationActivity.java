@@ -27,13 +27,13 @@ public class NotificationActivity extends BaseActivity {
     protected void initViews() {
         super.initViews();
 
+
     }
 
     @Override
     protected void setListener() {
         super.setListener();
-        findViewById(R.id.button).setOnClickListener(this);
-        findViewById(R.id.button1).setOnClickListener(this);
+        setOnClickListener(findViewById(R.id.button), findViewById(R.id.button1));
     }
 
     @Override
