@@ -9,14 +9,14 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
+import com.code.lengjiye.basic.BasicActivity;
 import com.lengjiye.code.MainActivity;
 import com.lengjiye.code.R;
-import com.lengjiye.code.base.BaseActivity;
 
 /**
  * 通知栏activity
  */
-public class NotificationActivity extends BaseActivity {
+public class NotificationActivity extends BasicActivity {
 
     @Override
     public int getResourceId() {

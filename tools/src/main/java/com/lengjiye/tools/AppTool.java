@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.lengjiye.tools.file.FileTool;
+
 import java.io.File;
 
 import static com.lengjiye.tools.StringTool.isBlank;

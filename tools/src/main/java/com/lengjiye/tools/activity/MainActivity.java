@@ -1,7 +1,9 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.lengjiye.tools.R;
 
 public class MainActivity extends AppCompatActivity {
 

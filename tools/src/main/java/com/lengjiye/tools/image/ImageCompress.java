@@ -1,4 +1,6 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.image;
+
+import com.lengjiye.tools.file.FileTool;
 
 import java.io.File;
 import java.util.ArrayList;

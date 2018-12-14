@@ -17,8 +17,8 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.TextView;
 
+import com.code.lengjiye.basic.BasicActivity;
 import com.lengjiye.code.R;
-import com.lengjiye.code.base.BaseActivity;
 import com.lengjiye.tools.LogTool;
 
 import java.io.BufferedReader;
@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 /**
  * @author liuzhuo
  */
-public class DeviceInformationActivity extends BaseActivity implements SensorEventListener {
+public class DeviceInformationActivity extends BasicActivity implements SensorEventListener {
     private TextView text;
     private SensorManager sensorManager;
 

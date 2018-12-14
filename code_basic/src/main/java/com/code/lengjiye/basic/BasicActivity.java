@@ -1,21 +1,24 @@
-package com.lengjiye.code.base;
+package com.code.lengjiye.basic;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.lengjiye.code.constants.NoDoubleClickProxy;
+import com.lengjiye.tools.proxy.NoDoubleClickProxy;
 
 import java.util.Locale;
 
-
 /**
- * 基类activity
+ * Activity 基类
+ * 创建人: lz
+ * 创建时间: 2018/12/13
+ * 修改备注:
  */
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class BasicActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
      * 第一次调用
@@ -23,25 +26,30 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     private boolean isFirst;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         initWindow();
         super.onCreate(savedInstanceState);
         int layoutResID = getResourceId();
         if (layoutResID != 0) {
             setContentView(layoutResID);
         }
-
         initIntentData();
-        initHandler();
         initLanguage();
-        initTitleBar();
+
         initViews();
-        initData();
+        initDatas();
 
         firstLoad();
+
         registerBroadcast();
 
         setListener();
+    }
+
+    /**
+     * 初始化window
+     */
+    protected void initWindow() {
 
     }
 
@@ -51,59 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @return
      */
     public abstract int getResourceId();
-
-    /**
-     * 注册监听事件
-     */
-    protected void registerBroadcast() {
-    }
-
-    /**
-     * 第一次调用
-     */
-    private void firstLoad() {
-        if (isFirst) {
-            return;
-        }
-        isFirst = true;
-        onFirstLoad();
-    }
-
-    /**
-     * 第一次调用
-     * <p>
-     * 只调用一次
-     */
-    protected void onFirstLoad() {
-
-    }
-
-    /**
-     * 初始化数据
-     */
-    protected void initData() {
-
-    }
-
-    /**
-     * 初始化view
-     */
-    protected void initViews() {
-
-    }
-
-    /**
-     * 初始化标题栏
-     */
-    protected void initTitleBar() {
-
-    }
-
-    /**
-     * intent数据处理
-     */
-    protected void initIntentData() {
-    }
 
     /**
      * 初始化语言
@@ -126,24 +81,57 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * 初始化handler
+     * intent数据处理
      */
-    protected void initHandler() {
+    protected void initIntentData() {
     }
 
     /**
-     * 初始化window
+     * 初始化view
      */
-    protected void initWindow() {
+    protected void initViews() {
+
     }
 
+    /**
+     * 初始化数据
+     */
+    protected void initDatas() {
+
+    }
+
+    /**
+     * 第一次调用
+     */
+    private void firstLoad() {
+        if (isFirst) {
+            return;
+        }
+        isFirst = true;
+        onFirstLoad();
+    }
+
+    /**
+     * 第一次调用
+     * <p>
+     * 只调用一次
+     */
+    protected void onFirstLoad() {
+
+    }
+
+
+    /**
+     * 注册监听事件
+     */
+    protected void registerBroadcast() {
+    }
 
     /**
      * 设置监听事件
      */
     protected void setListener() {
     }
-
 
     @Override
     public void onClick(View view) {
@@ -164,5 +152,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 continue;
             v.setOnClickListener(new NoDoubleClickProxy(this));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

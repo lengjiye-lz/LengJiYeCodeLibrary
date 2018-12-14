@@ -1,4 +1,4 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.screen;
 
 import android.content.Context;
 import android.util.TypedValue;

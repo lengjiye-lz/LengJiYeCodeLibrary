@@ -1,4 +1,4 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.file;
 
 import android.app.ActivityManager;
 import android.content.Context;

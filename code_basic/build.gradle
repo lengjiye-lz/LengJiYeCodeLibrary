@@ -1,15 +1,20 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion cfgs.compileSdkVersion
+    compileSdkVersion 28
+
+
+
     defaultConfig {
-        applicationId "com.lengjiye.code"
-        minSdkVersion cfgs.minSdkVersion
-        targetSdkVersion cfgs.targetSdkVersion
-        versionCode cfgs.versionCode
-        versionName cfgs.versionName
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -22,10 +27,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libs.sup_v7
-    implementation "com.android.support.constraint:constraint-layout:${cfgs.constraint_layout}"
-    implementation project(':tools')
     testImplementation "junit:junit:${cfgs.junit}"
     androidTestImplementation "com.android.support.test:runner:${cfgs.testRunner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
-    implementation project(path: ':code_basic')
+    implementation project(':tools')
 }

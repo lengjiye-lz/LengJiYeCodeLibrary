@@ -1,14 +1,12 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.file;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +19,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lengjiye.tools.FileTool.getFileByPath;
-import static com.lengjiye.tools.FileTool.isExist;
+import static com.lengjiye.tools.file.FileTool.getFileByPath;
+import static com.lengjiye.tools.file.FileTool.isExist;
 import static com.lengjiye.tools.StringTool.isBlank;
 
 /**

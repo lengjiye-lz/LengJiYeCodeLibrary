@@ -4,8 +4,8 @@ package com.lengjiye.code.activity;
 import android.util.Log;
 import android.view.View;
 
+import com.code.lengjiye.basic.BasicActivity;
 import com.lengjiye.code.R;
-import com.lengjiye.code.base.BaseActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 /**
  * 自动测试activity
  */
-public class AutoTestActivity extends BaseActivity {
+public class AutoTestActivity extends BasicActivity {
 
     @Override
     public int getResourceId() {

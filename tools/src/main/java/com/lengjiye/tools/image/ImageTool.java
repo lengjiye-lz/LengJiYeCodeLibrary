@@ -1,8 +1,10 @@
-package com.lengjiye.tools;
+package com.lengjiye.tools.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+
+import com.lengjiye.tools.file.FileTool;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
