@@ -26,7 +26,8 @@ public abstract class BasicFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         layout = inflater.inflate(getResourceId(), container, false);
-        initView();
+        initViews();
+        initDates();
         return layout;
 
     }
@@ -34,9 +35,18 @@ public abstract class BasicFragment extends Fragment implements View.OnClickList
     /**
      * 初始化View
      */
-    protected void initView() {
+    protected void initViews() {
 
     }
+
+
+    /**
+     * 初始化数据
+     */
+    protected void initDates() {
+
+    }
+
 
     /**
      * 请求网络，数据处理写在这
