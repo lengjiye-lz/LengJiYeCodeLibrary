@@ -101,6 +101,8 @@
         <activity android:name=".activity.DeviceInformationActivity"></activity>
         <activity android:name=".activity.NotificationActivity"></activity>
         <activity android:name=".activity.AutoTestActivity"></activity>
+        <activity android:name=".activity.WebpAnimationActivity"></activity>
+        <activity android:name=".activity.MethodTestActivity"></activity>
 
         <service
             android:name=".autoinstall.AutoInstallService"

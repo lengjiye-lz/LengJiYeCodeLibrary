@@ -22,6 +22,14 @@ public abstract class BasicFragment extends Fragment implements View.OnClickList
 
     protected View layout;
 
+
+    /**
+     * 获取fragmentTag
+     *
+     * @return
+     */
+    public abstract String getFragmentTag();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,7 +124,7 @@ public abstract class BasicFragment extends Fragment implements View.OnClickList
      *
      * @return
      */
-    public abstract int getResourceId();
+    protected abstract int getResourceId();
 
     /**
      * 根据Id获取控件

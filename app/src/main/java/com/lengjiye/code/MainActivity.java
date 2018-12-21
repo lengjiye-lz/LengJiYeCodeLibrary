@@ -7,15 +7,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 
+import com.code.lengjiye.basic.BasicActivity;
 import com.lengjiye.code.activity.AutoTestActivity;
 import com.lengjiye.code.activity.DeviceInformationActivity;
 import com.lengjiye.code.activity.NotificationActivity;
-import com.lengjiye.code.base.BaseActivity;
+import com.lengjiye.code.activity.WebpAnimationActivity;
 
 /**
  * @author liuzhuo
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BasicActivity {
 
 
     @Override
@@ -26,7 +27,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setListener() {
         super.setListener();
-        setOnClickListener(findViewById(R.id.button), findViewById(R.id.button1), findViewById(R.id.button2));
+        setOnClickListener(findViewById(R.id.button), findViewById(R.id.button1), findViewById(R.id.button2), findViewById(R.id.button3));
         setNotificationChannel();
     }
 
@@ -44,6 +45,10 @@ public class MainActivity extends BaseActivity {
 
             case R.id.button2:
                 startActivity(new Intent(MainActivity.this, AutoTestActivity.class));
+                break;
+
+            case R.id.button3:
+                startActivity(new Intent(MainActivity.this, WebpAnimationActivity.class));
                 break;
 
             default:
