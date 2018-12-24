@@ -37,7 +37,7 @@ public abstract class BasicActivity extends AppCompatActivity implements View.On
         initLanguage();
 
         initViews();
-        initDatas();
+        initDates();
 
         firstLoad();
 
@@ -90,14 +90,12 @@ public abstract class BasicActivity extends AppCompatActivity implements View.On
      * 初始化view
      */
     protected void initViews() {
-
     }
 
     /**
      * 初始化数据
      */
-    protected void initDatas() {
-
+    protected void initDates() {
     }
 
     /**
@@ -117,7 +115,6 @@ public abstract class BasicActivity extends AppCompatActivity implements View.On
      * 只调用一次
      */
     protected void onFirstLoad() {
-
     }
 
 

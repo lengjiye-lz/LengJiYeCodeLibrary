@@ -27,7 +27,6 @@ public class MethodTestActivity extends BasicActivity {
         super.setListener();
     }
 
-
     @Override
     public void onClick(View view) {
         super.onClick(view);

@@ -14,12 +14,13 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * 泛型类 泛型方法测试
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class GenericTest {
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -86,7 +87,9 @@ public class ExampleInstrumentedTest {
      * @param <T>
      */
     public interface Persino<T> {
-        T onPersino();
+        T getPersion();
+
+        void setPersion(T t);
     }
 
     /**
@@ -94,11 +97,75 @@ public class ExampleInstrumentedTest {
      *
      * @param <T>
      */
-    class Generator<T> implements Persino<T> {
+    static class Generator<T> implements Persino<T> {
+
+        private T t;
 
         @Override
-        public T onPersino() {
+        public T getPersion() {
+            return t;
+        }
+
+        @Override
+        public void setPersion(T t) {
+            this.t = t;
+        }
+
+    }
+
+    class GSDFs implements Persino<String> {
+
+        @Override
+        public String getPersion() {
             return null;
         }
+
+        @Override
+        public void setPersion(String s) {
+
+        }
+
+
     }
+
+    @Test
+    public void getT() {
+        Generator<String> generator = new Generator<>();
+        generator.setPersion("asdcasd");
+        LogTool.e("getPersion:" + generator.getPersion());
+
+        sdc("asdcasd");
+        sdc(100);
+
+
+        sdcsd(new Generator<EAsd>());
+
+        adscasd(new Generator<TEst>());
+
+    }
+
+    /**
+     * 泛型方法
+     */
+    public <T> void sdc(T t) {
+        LogTool.e("t:" + t);
+    }
+
+    /**
+     * extends 泛型的上边界  传入的类型必须是String本身或者子类
+     */
+    public void sdcsd(Persino<? extends TEst> persino) {
+        LogTool.e("sdcsd");
+
+    }
+
+    /**
+     * super 泛型的下边界  传入的类型必须是String本身或者父类
+     */
+    public <T extends Number> T adscasd(Persino<? super TEst> persino) {
+        LogTool.e("adscasd");
+        return null;
+    }
+
+
 }
