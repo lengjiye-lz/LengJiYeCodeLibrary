@@ -167,5 +167,30 @@ public class GenericTest {
         return null;
     }
 
+    @Test
+    public void sdca() {
 
+//        Son son = (Son) new Father();
+//        son.setAge(10);
+
+        Father father = new Son();
+        if (father != null) {
+            father.toString();
+        }
+        ((Son) father).setAge(20);
+        String.valueOf(father);
+
+
+    }
+
+    /**
+     * 参数可变的方法
+     * <p>
+     * strings就是一个临时的数组
+     */
+    private void getString(String... strings) {
+        for (int i = 0; i < strings.length; i++) {
+            LogTool.e(strings[i]);
+        }
+    }
 }
