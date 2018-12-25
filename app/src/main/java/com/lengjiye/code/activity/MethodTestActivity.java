@@ -3,13 +3,14 @@ package com.lengjiye.code.activity;
 
 import android.view.View;
 
-import com.code.lengjiye.basic.BasicActivity;
+import com.code.lengjiye.mvp.BasicMvpActivity;
+import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.R;
 
 /**
  * 方法测试
  */
-public class MethodTestActivity extends BasicActivity {
+public class MethodTestActivity extends BasicMvpActivity {
 
     @Override
     public int getResourceId() {
@@ -20,6 +21,11 @@ public class MethodTestActivity extends BasicActivity {
     protected void initViews() {
         super.initViews();
 
+    }
+
+    @Override
+    public MvpPresenter createPresenter() {
+        return null;
     }
 
     @Override
@@ -34,4 +40,11 @@ public class MethodTestActivity extends BasicActivity {
 
         }
     }
+
+    @Override
+    public boolean isAlived() {
+        return false;
+    }
+
+
 }

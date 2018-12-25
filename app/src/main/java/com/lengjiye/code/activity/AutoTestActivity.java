@@ -4,7 +4,8 @@ package com.lengjiye.code.activity;
 import android.util.Log;
 import android.view.View;
 
-import com.code.lengjiye.basic.BasicActivity;
+import com.code.lengjiye.mvp.BasicMvpActivity;
+import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.R;
 
 import java.io.BufferedReader;
@@ -14,17 +15,16 @@ import java.io.InputStreamReader;
 /**
  * 自动测试activity
  */
-public class AutoTestActivity extends BasicActivity {
+public class AutoTestActivity extends BasicMvpActivity {
 
     @Override
-    public int getResourceId() {
+    protected int getResourceId() {
         return R.layout.activity_auto_test;
     }
 
     @Override
     protected void initViews() {
         super.initViews();
-
     }
 
     @Override
@@ -32,7 +32,6 @@ public class AutoTestActivity extends BasicActivity {
         super.setListener();
         setOnClickListener(findViewById(R.id.button));
     }
-
 
     @Override
     public void onClick(View view) {
@@ -63,5 +62,15 @@ public class AutoTestActivity extends BasicActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public MvpPresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    public boolean isAlived() {
+        return false;
     }
 }

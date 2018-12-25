@@ -3,13 +3,14 @@ package com.lengjiye.code.activity;
 
 import android.view.View;
 
-import com.code.lengjiye.basic.BasicActivity;
+import com.code.lengjiye.mvp.BasicMvpActivity;
+import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.R;
 
 /**
  * webp动画
  */
-public class WebpAnimationActivity extends BasicActivity {
+public class WebpAnimationActivity extends BasicMvpActivity {
 
     @Override
     public int getResourceId() {
@@ -20,6 +21,11 @@ public class WebpAnimationActivity extends BasicActivity {
     protected void initViews() {
         super.initViews();
 
+    }
+
+    @Override
+    public MvpPresenter createPresenter() {
+        return null;
     }
 
     @Override
@@ -34,5 +40,10 @@ public class WebpAnimationActivity extends BasicActivity {
         switch (view.getId()) {
 
         }
+    }
+
+    @Override
+    public boolean isAlived() {
+        return false;
     }
 }

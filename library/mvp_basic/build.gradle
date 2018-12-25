@@ -30,5 +30,6 @@ dependencies {
     testImplementation "junit:junit:${cfgs.junit}"
     androidTestImplementation "com.android.support.test:runner:${cfgs.testRunner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
-    implementation project(':tools')
+    api project(':library:code_basic')
+    implementation project(':library:tools')
 }

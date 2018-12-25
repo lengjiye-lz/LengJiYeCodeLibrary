@@ -1,2 +1,2 @@
-include ':app', ':code_basic'
-include ':tools'
+include ':app'
+include ':library:tools', ':library:code_basic', ':library:mvp_basic'

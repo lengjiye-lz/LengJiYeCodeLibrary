@@ -58,7 +58,7 @@ public abstract class BasicActivity extends AppCompatActivity implements View.On
      *
      * @return
      */
-    public abstract int getResourceId();
+    protected abstract int getResourceId();
 
     /**
      * 初始化语言

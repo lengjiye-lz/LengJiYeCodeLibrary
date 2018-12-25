@@ -17,7 +17,8 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.TextView;
 
-import com.code.lengjiye.basic.BasicActivity;
+import com.code.lengjiye.mvp.BasicMvpActivity;
+import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.R;
 import com.lengjiye.tools.LogTool;
 
@@ -37,7 +38,7 @@ import java.util.regex.Pattern;
 /**
  * @author liuzhuo
  */
-public class DeviceInformationActivity extends BasicActivity implements SensorEventListener {
+public class DeviceInformationActivity extends BasicMvpActivity implements SensorEventListener {
     private TextView text;
     private SensorManager sensorManager;
 
@@ -50,6 +51,11 @@ public class DeviceInformationActivity extends BasicActivity implements SensorEv
         text = findViewById(R.id.text);
         text.setMovementMethod(ScrollingMovementMethod.getInstance());
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+    }
+
+    @Override
+    public MvpPresenter createPresenter() {
+        return null;
     }
 
     @Override
@@ -806,4 +812,10 @@ public class DeviceInformationActivity extends BasicActivity implements SensorEv
         super.onDestroy();
         mOrientationListener.disable();
     }
+
+    @Override
+    public boolean isAlived() {
+        return false;
+    }
+
 }

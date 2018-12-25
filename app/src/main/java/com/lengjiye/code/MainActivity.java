@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 
-import com.code.lengjiye.basic.BasicActivity;
+import com.code.lengjiye.mvp.BasicMvpActivity;
+import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.activity.AutoTestActivity;
 import com.lengjiye.code.activity.DeviceInformationActivity;
 import com.lengjiye.code.activity.NotificationActivity;
@@ -16,8 +17,17 @@ import com.lengjiye.code.activity.WebpAnimationActivity;
 /**
  * @author liuzhuo
  */
-public class MainActivity extends BasicActivity {
+public class MainActivity extends BasicMvpActivity {
 
+    @Override
+    public MvpPresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    public boolean isAlived() {
+        return false;
+    }
 
     @Override
     public int getResourceId() {
