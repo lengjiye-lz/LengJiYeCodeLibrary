@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion cfgs.compileSdkVersion
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion cfgs.minSdkVersion
+        targetSdkVersion cfgs.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        debug {}
+        qa {}
+        qaForTest {}
+        staging {}
+        stagingForTest {}
+        release {}
+        releaseForTest {}
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation libs.sup_v7
+    testImplementation "junit:junit:${cfgs.junit}"
+    androidTestImplementation "com.android.support.test:runner:${cfgs.testRunner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
+    implementation "com.squareup.okhttp3:okhttp:${cfgs.okhttp3}"
+}

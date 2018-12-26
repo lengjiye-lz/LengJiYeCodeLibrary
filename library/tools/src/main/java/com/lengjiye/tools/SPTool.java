@@ -3,6 +3,8 @@ package com.lengjiye.tools;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.code.lengjiye.app.AppMaster;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -16,145 +18,22 @@ public class SPTool {
     /**
      * 默认使用包名作为name
      */
-    private static String NAME;
-
-    private static SPTool spTool;
-
-    private static Context application;
+    private static String NAME = AppMaster.getInstance().getApplicationId();
 
     private SPTool() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
-    /**
-     * @return
-     */
-    public synchronized static SPTool getInstance(Context applicationContext) {
-        NAME = applicationContext.getPackageName();
-        application = applicationContext;
-        return getInstance(NAME);
-    }
 
     /**
-     * @return SPTool
-     */
-    public synchronized static SPTool getInstance(String name) {
-        if (spTool == null) {
-            spTool = new SPTool();
-        }
-        NAME = name;
-        return spTool;
-    }
-
-    /**
-     * 将传入的key和value放入到SharedPreferences中
+     * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      *
      * @param key
-     * @param value
+     * @param object
      */
-    public void putString(String key, String value) {
-        setParam(key, value);
-    }
-
-    /**
-     * 根据传入的key和defValue从SharedPreferences中获取相应的值
-     *
-     * @param key
-     * @param defValue
-     * @return
-     */
-    public String getString(String key, String defValue) {
-        String value = (String) getParam(key, defValue);
-        return value;
-    }
-
-    /**
-     * 将传入的key和value放入到SharedPreferences中
-     *
-     * @param key
-     * @param value
-     */
-    public void putBoolean(String key, boolean value) {
-        setParam(key, value);
-    }
-
-    /**
-     * 根据传入的key和defValue从SharedPreferences中获取相应的值
-     *
-     * @param key
-     * @param defValue
-     * @return
-     */
-    public boolean getBoolean(String key, boolean defValue) {
-        boolean value = (boolean) getParam(key, defValue);
-        return value;
-    }
-
-    /**
-     * 将传入的key和value放入到SharedPreferences中
-     *
-     * @param key
-     * @param value
-     */
-    public void putInt(String key, int value) {
-        setParam(key, value);
-    }
-
-    /**
-     * 根据传入的key和defValue从SharedPreferences中获取相应的值
-     *
-     * @param key
-     * @param defValue
-     * @return
-     */
-    public int getInt(String key, int defValue) {
-        int value = (int) getParam(key, defValue);
-        return value;
-    }
-
-    /**
-     * 将传入的key和value放入到SharedPreferences中
-     *
-     * @param key
-     * @param value
-     */
-    public void putLong(String key, long value) {
-        setParam(key, value);
-    }
-
-    /**
-     * 根据传入的key和defValue从SharedPreferences中获取相应的值
-     *
-     * @param key
-     * @param defValue
-     * @return
-     */
-    public long getLong(String key, long defValue) {
-        long value = (long) getParam(key, defValue);
-        return value;
-    }
-
-    /**
-     * 将传入的key和value放入到SharedPreferences中
-     *
-     * @param key
-     * @param value
-     */
-    public void putFloat(String key, float value) {
-        setParam(key, value);
-    }
-
-    /**
-     * 根据传入的key和defValue从SharedPreferences中获取相应的值
-     *
-     * @param key
-     * @param defValue
-     * @return
-     */
-    public float getFloat(String key, float defValue) {
-        float value = (float) getParam(key, defValue);
-        return value;
+    public static void put(String key, Object object) {
+        put(NAME, key, object);
     }
 
     /**
@@ -163,8 +42,8 @@ public class SPTool {
      * @param key
      * @param object
      */
-    private void setParam(String key, Object object) {
-        SharedPreferences sp = application.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+    public static void put(String name, String key, Object object) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         if (object instanceof String) {
             editor.putString(key, (String) object);
@@ -182,27 +61,49 @@ public class SPTool {
         SharedPreferencesCompat.apply(editor);
     }
 
-    /**
-     * 得到保存数据的方法，我们根据默认值得到保存的数据的具体类型，然后调用相对于的方法获取值
-     *
-     * @param key
-     * @param defaultObject
-     * @return
-     */
-    private Object getParam(String key, Object defaultObject) {
-        SharedPreferences sp = application.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        if (defaultObject instanceof String) {
-            return sp.getString(key, (String) defaultObject);
-        } else if (defaultObject instanceof Integer) {
-            return sp.getInt(key, (Integer) defaultObject);
-        } else if (defaultObject instanceof Boolean) {
-            return sp.getBoolean(key, (Boolean) defaultObject);
-        } else if (defaultObject instanceof Float) {
-            return sp.getFloat(key, (Float) defaultObject);
-        } else if (defaultObject instanceof Long) {
-            return sp.getLong(key, (Long) defaultObject);
-        }
-        return null;
+    public static String getString(String key, String defValue) {
+        return getString(NAME, key, defValue);
+    }
+
+    public static String getString(String name, String key, String defValue) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return sp.getString(key, defValue);
+    }
+
+    public static int getInt(String key, int defValue) {
+        return getInt(NAME, key, defValue);
+    }
+
+    public static int getInt(String name, String key, int defValue) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return sp.getInt(key, defValue);
+    }
+
+    public static boolean getBoolean(String key, boolean defValue) {
+        return getBoolean(NAME, key, defValue);
+    }
+
+    public static boolean getBoolean(String name, String key, boolean defValue) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return sp.getBoolean(key, defValue);
+    }
+
+    public static float getFloat(String key, float defValue) {
+        return getFloat(NAME, key, defValue);
+    }
+
+    public static float getFloat(String name, String key, float defValue) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return sp.getFloat(key, defValue);
+    }
+
+    public static long getLong(String key, long defValue) {
+        return getLong(NAME, key, defValue);
+    }
+
+    public static long getLong(String name, String key, long defValue) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return sp.getLong(key, defValue);
     }
 
     /**
@@ -211,8 +112,18 @@ public class SPTool {
      * @param key
      * @return
      */
-    public boolean contains(String key) {
-        SharedPreferences sp = application.getSharedPreferences(NAME,
+    public static boolean contains(String key) {
+        return contains(NAME, key);
+    }
+
+    /**
+     * 查询某个key是否已经存在
+     *
+     * @param key
+     * @return
+     */
+    public static boolean contains(String name, String key) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name,
                 Context.MODE_PRIVATE);
         return sp.contains(key);
     }
@@ -222,8 +133,17 @@ public class SPTool {
      *
      * @param key
      */
-    public void remove(String key) {
-        SharedPreferences sp = application.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+    public static void remove(String key) {
+        remove(NAME, key);
+    }
+
+    /**
+     * 移除某个key值已经对应的值
+     *
+     * @param key
+     */
+    public static void remove(String name, String key) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
         SharedPreferencesCompat.apply(editor);
@@ -232,8 +152,16 @@ public class SPTool {
     /**
      * 清除所有数据
      */
-    public void clear() {
-        SharedPreferences sp = application.getSharedPreferences(NAME,
+    public static void clear() {
+        clear(NAME);
+    }
+
+
+    /**
+     * 清除所有数据
+     */
+    public static void clear(String name) {
+        SharedPreferences sp = AppMaster.getInstance().getAppContext().getSharedPreferences(name,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();

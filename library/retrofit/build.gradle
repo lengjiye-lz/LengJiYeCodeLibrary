@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion cfgs.compileSdkVersion
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion cfgs.minSdkVersion
+        targetSdkVersion cfgs.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        debug {}
+        qa {}
+        qaForTest {}
+        staging {}
+        stagingForTest {}
+        release {}
+        releaseForTest {}
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation libs.sup_v7
+    testImplementation "junit:junit:${cfgs.junit}"
+    androidTestImplementation "com.android.support.test:runner:${cfgs.testRunner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
+
+    api "io.reactivex.rxjava2:rxjava:${cfgs.rxjava_version}"
+    // 防止rxjava内存泄漏
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:${cfgs.rxlifecycle_components}"
+
+    implementation "com.squareup.retrofit2:retrofit:${cfgs.retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-gson:${cfgs.retrofit_version}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${cfgs.retrofit_version}"
+    api "com.google.code.gson:gson:${cfgs.gson}"
+    implementation project(':library:tools')
+    implementation project(':library:app_library')
+}

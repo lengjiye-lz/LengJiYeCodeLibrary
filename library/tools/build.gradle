@@ -2,41 +2,44 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion cfgs.compileSdkVersion
-    buildToolsVersion cfgs.buildToolsVersion
-
+    buildToolsVersion '28.0.3'
     defaultConfig {
         minSdkVersion cfgs.minSdkVersion
         targetSdkVersion cfgs.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        debug {}
+        qa {}
+        qaForTest {}
+        staging {}
+        stagingForTest {}
+        release {}
+        releaseForTest {}
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 
-//    productFlavors {
-//        if (!isModule.toBoolean()) {
-//            create('all') {
-//
-//            }
-//        }
-//    }
-//    publishNonDefault true
-    buildToolsVersion '28.0.3'
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
-
-//configurations {
-//    allDebug
-//    allRelease
-//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libs.sup_v7
     implementation "com.android.support.constraint:constraint-layout:${cfgs.constraint_layout}"
+    implementation project(':library:app_library')
 }

@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.code.lengjiye.app.AppMaster;
 import com.lengjiye.tools.file.FileTool;
 
 import java.io.File;
+import java.util.TimeZone;
 
 import static com.lengjiye.tools.StringTool.isBlank;
 
@@ -26,42 +29,6 @@ public class AppTool {
     private AppTool() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
-    }
-
-    /**
-     * 是否是debug模式
-     *
-     * @return
-     */
-    public static boolean isDebugMode() {
-        return BuildConfig.DEBUG;
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @return
-     */
-    public static int getVersionCode() {
-        return BuildConfig.VERSION_CODE;
-    }
-
-    /**
-     * 获取版本名称
-     *
-     * @return
-     */
-    public static String getVersionName() {
-        return BuildConfig.VERSION_NAME;
-    }
-
-    /**
-     * 获取包名
-     *
-     * @return
-     */
-    public static String getApplicationId() {
-        return BuildConfig.APPLICATION_ID;
     }
 
     /**
@@ -265,4 +232,38 @@ public class AppTool {
     public static boolean isUserApp(PackageInfo pInfo) {
         return (!isSystemApp(pInfo) && !isSystemUpdateApp(pInfo));
     }
+
+    /**
+     * 获取国家码
+     */
+    public static String getCountryZipCode() {
+        String countryZipCode = "";
+        String countryID = "CN";
+        TelephonyManager manager = (TelephonyManager) AppMaster.getInstance().getAppContext().getSystemService(
+                Context.TELEPHONY_SERVICE);
+        String upperCase = manager.getSimCountryIso().toUpperCase();
+        if (!TextUtils.isEmpty(upperCase)) {
+            countryID = upperCase;
+        }
+        Log.d("ss", "CountryID--->>>" + countryID);
+        String[] rl = AppMaster.getInstance().getAppContext().getResources().getStringArray(R.array.countryCodes);
+        for (String aRl : rl) {
+            String[] g = aRl.split(",");
+            if (g[1].trim().equals(countryID.trim())) {
+                countryZipCode = g[1];
+                break;
+            }
+        }
+        return countryZipCode;
+    }
+
+    /**
+     * 获取时区
+     *
+     * @return
+     */
+    public static String getTimeZone() {
+        return String.valueOf(TimeZone.getDefault().getRawOffset() / 1000);
+    }
+
 }

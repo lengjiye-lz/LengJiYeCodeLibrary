@@ -2,6 +2,8 @@ package com.lengjiye.tools;
 
 import android.util.Log;
 
+import com.code.lengjiye.app.AppMaster;
+
 
 /**
  * 类描述: 日志工具类
@@ -15,7 +17,7 @@ import android.util.Log;
 public class LogTool {
 
     public static final String SEPARATOR = ",";
-    public static final String TAG_NAME = "lengjiye";
+    public static final String TAG_NAME = AppMaster.getInstance().getApplicationId();
 
     private LogTool() {
         /* cannot be instantiated */
@@ -29,7 +31,26 @@ public class LogTool {
         if (BuildConfig.DEBUG) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
-            Log.v(tag, getLogInfo(stackTraceElement) + message);
+            logV(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void v(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+            logV(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void logV(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            Log.v(tag, message);
         }
     }
 
@@ -40,7 +61,26 @@ public class LogTool {
         if (BuildConfig.DEBUG) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
-            Log.d(tag, getLogInfo(stackTraceElement) + message);
+            logD(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void d(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+            logD(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void logD(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            Log.d(tag, message);
         }
     }
 
@@ -51,7 +91,26 @@ public class LogTool {
         if (BuildConfig.DEBUG) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
-            Log.i(tag, getLogInfo(stackTraceElement) + message);
+            logI(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void i(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+            logI(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void logI(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            Log.i(tag, message);
         }
     }
 
@@ -62,7 +121,26 @@ public class LogTool {
         if (BuildConfig.DEBUG) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
-            Log.w(tag, getLogInfo(stackTraceElement) + message);
+            logW(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void w(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+            logW(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void logW(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            Log.w(tag, message);
         }
     }
 
@@ -73,15 +151,24 @@ public class LogTool {
         if (BuildConfig.DEBUG) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
-            e(tag, getLogInfo(stackTraceElement) + message);
+            logE(tag, getLogInfo(stackTraceElement) + message);
         }
     }
 
     /**
-     * @param tag
      * @param message
      */
     public static void e(String tag, String message) {
+        if (BuildConfig.DEBUG) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
+            logE(tag, getLogInfo(stackTraceElement) + message);
+        }
+    }
+
+    /**
+     * @param message
+     */
+    public static void logE(String tag, String message) {
         if (BuildConfig.DEBUG) {
             Log.e(tag, message);
         }

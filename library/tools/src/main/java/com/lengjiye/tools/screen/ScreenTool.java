@@ -22,7 +22,7 @@ public class ScreenTool {
     }
 
     /**
-     * 获得屏幕高度
+     * 获得屏幕宽度
      *
      * @param context
      * @return
@@ -35,7 +35,7 @@ public class ScreenTool {
     }
 
     /**
-     * 获得屏幕宽度
+     * 获得屏幕高度
      *
      * @param context
      * @return
@@ -110,4 +110,15 @@ public class ScreenTool {
         return bp;
 
     }
+
+    /***
+     * 获取屏幕密度
+     *
+     * @return
+     */
+    public static float getScreenDensity(Context context) {
+        DisplayMetrics dm = context.getApplicationContext().getResources().getDisplayMetrics();
+        return dm.density;
+    }
+
 }

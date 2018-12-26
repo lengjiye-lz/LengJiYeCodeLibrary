@@ -1,19 +1,220 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
+//#版本信息 version_code 63 是特殊的2.4.2版本
+def version_name = "${cfgs.versionName}"
+def version_code = "${cfgs.versionCode}".toInteger()
+//#定义混淆代码的路径
+def proguardPath = "../proguard/code/proguard-rules.pro"
+
+
+//#服务器地址
+def String server_dev_address = "\"https://latest-dev-appv2.lygou.cc\""
+def String server_test_address = "\"https://latest-test-appv2.lygou.cc\""
+def String server_release_address = "\"https://appv2.lygou.cc\""
+def String server_staging_address = "\"https://latest-staging-appv2.lygou.cc\""
+
+//env_name
+def env_name_dev = "\"dev\""
+def env_name_qa = "\"test\""
+def env_name_staging = "\"staging\""
+def env_name_release = "\"release\""
+
+
+//获取时间戳
+def getDate() {
+    def sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
+    def nowDateStr = "\"" + sdf.format(new Date()) + "\""
+    return nowDateStr
+}
+
+def buildTime = getDate()
+
+def guardEnabled = false
+
 android {
+
     compileSdkVersion cfgs.compileSdkVersion
+    buildToolsVersion '28.0.3'
+
+    signingConfigs {
+        lengjiye {
+            //绝对路径和相对路径都可以
+            storeFile file("../keystore/lengjiye.keystore")  //签名文件
+            storePassword "lengjiye"                       //密码
+            keyAlias "alias"
+            keyPassword "lengjiye"
+
+//            v2SigningEnabled ture
+        }
+
+    }
+
     defaultConfig {
-        applicationId "com.lengjiye.code"
+        applicationId cfgs.applicationId
         minSdkVersion cfgs.minSdkVersion
         targetSdkVersion cfgs.targetSdkVersion
-        versionCode cfgs.versionCode
-        versionName cfgs.versionName
+        versionCode version_code
+        versionName version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        //启用renderscript
+        renderscriptTargetApi = cfgs.targetSdkVersion
+        renderscriptSupportModeEnabled = true
     }
+
+    flavorDimensions "default"
+
+
     buildTypes {
-        release {
+
+        /**
+         * 开发环境
+         */
+        debug {
+            debuggable true
+            //混淆
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            // 加载默认混淆配置文件
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled false
+            // 签名
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_dev)
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_dev_address)
+        }
+
+        /**
+         * 测试环境
+         */
+        qa {
+            debuggable true
+            minifyEnabled true
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled true
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_qa)
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_test_address)
+        }
+
+        /**
+         * 测试环境，调试
+         */
+        qaForTest {
+            debuggable true
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled false
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_qa)
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_test_address)
+        }
+
+        /**
+         * 预发布环境
+         */
+        staging {
+            debuggable false
+            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled true
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_staging)
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_staging_address)
+        }
+
+        /**
+         * 预发布环境，调试
+         */
+        stagingForTest {
+            debuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled false
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_staging)
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_staging_address)
+        }
+
+        /**
+         * 生产环境
+         */
+        release {
+            debuggable false
+            minifyEnabled true
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled true
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_release)
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_release_address)
+        }
+
+        /**
+         * 生产环境，调试
+         */
+        releaseForTest {
+            debuggable true
+            minifyEnabled false
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles proguardPath
+            // 如果没有提供混淆规则文件，则设置默认的混淆规则文件（SDK/tools/proguard/proguard-android.txt）
+//            pseudoLocalesEnabled false
+            signingConfig signingConfigs.lengjiye
+
+            buildConfigField("String", "ENV_NAME", env_name_release)
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("String", "BUILD_TIME", buildTime)
+            buildConfigField("String", "SERVICE_ADDRESS", server_release_address)
         }
     }
 
@@ -32,4 +233,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
     implementation project(':library:mvp_basic')
     implementation project(':library:tools')
+    implementation project(':library:app_library')
 }
