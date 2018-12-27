@@ -2,7 +2,7 @@ ext {
     cfgs = [
             compileSdkVersion            : 28,
             buildToolsVersion            : "27.0.3",
-            applicationId                : "com.touxingmao.appstore",
+            applicationId                : "com.lengjiye.code",
             minSdkVersion                : 19,
             targetSdkVersion             : 24,
             versionCode                  : 1,

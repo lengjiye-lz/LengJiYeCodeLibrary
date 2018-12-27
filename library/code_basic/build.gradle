@@ -43,5 +43,6 @@ dependencies {
     testImplementation "junit:junit:${cfgs.junit}"
     androidTestImplementation "com.android.support.test:runner:${cfgs.testRunner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${cfgs.espresso}"
+    api "com.trello.rxlifecycle2:rxlifecycle-components:${cfgs.rxlifecycle_components}"
     implementation project(':library:tools')
 }

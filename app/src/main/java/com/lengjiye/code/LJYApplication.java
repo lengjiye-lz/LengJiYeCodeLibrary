@@ -3,6 +3,7 @@ package com.lengjiye.code;
 import android.app.Application;
 import android.content.Context;
 
+import com.code.lengjiye.app.AppMaster;
 import com.code.lengjiye.app.IApp;
 
 /**
@@ -27,6 +28,7 @@ public class LJYApplication extends Application implements IApp {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        AppMaster.getInstance().setApp(this);
     }
 
     @Override
@@ -56,11 +58,11 @@ public class LJYApplication extends Application implements IApp {
 
     @Override
     public boolean getIsDebug() {
-        return BuildConfig.IS_DEBUG;
+        return BuildConfig.DEBUG;
     }
 
     @Override
-    public String getRunEnv() {
-        return BuildConfig.ENV_NAME;
+    public String getBuildType() {
+        return BuildConfig.BUILD_TYPE;
     }
 }

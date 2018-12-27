@@ -25,9 +25,11 @@ public interface IApp {
     boolean getIsDebug();
 
     /**
-     * 运行环境
+     * 编译环境
      *
      * @return
      */
-    String getRunEnv();
+    String getBuildType();
+
+
 }

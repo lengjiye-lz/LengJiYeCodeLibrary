@@ -53,7 +53,6 @@ public class RetrofitHolder {
     private OkHttpClient getClient() {
         if (client == null) {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
             client = builder
                     .addInterceptor(new SignInterceptor())
                     .connectTimeout(15, TimeUnit.SECONDS)

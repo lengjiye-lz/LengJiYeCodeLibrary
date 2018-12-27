@@ -11,15 +11,9 @@ def proguardPath = "../proguard/code/proguard-rules.pro"
 
 //#服务器地址
 def String server_dev_address = "\"https://latest-dev-appv2.lygou.cc\""
-def String server_test_address = "\"https://latest-test-appv2.lygou.cc\""
+def String server_test_address = "\"https://baijiahao.baidu.com\""
 def String server_release_address = "\"https://appv2.lygou.cc\""
 def String server_staging_address = "\"https://latest-staging-appv2.lygou.cc\""
-
-//env_name
-def env_name_dev = "\"dev\""
-def env_name_qa = "\"test\""
-def env_name_staging = "\"staging\""
-def env_name_release = "\"release\""
 
 
 //获取时间戳
@@ -89,8 +83,6 @@ android {
             // 签名
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_dev)
-            buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_dev_address)
         }
@@ -109,8 +101,6 @@ android {
 //            pseudoLocalesEnabled true
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_qa)
-            buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_test_address)
         }
@@ -130,8 +120,6 @@ android {
 //            pseudoLocalesEnabled false
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_qa)
-            buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_test_address)
         }
@@ -151,8 +139,6 @@ android {
 //            pseudoLocalesEnabled true
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_staging)
-            buildConfigField("boolean", "IS_DEBUG", "false")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_staging_address)
         }
@@ -171,8 +157,6 @@ android {
 //            pseudoLocalesEnabled false
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_staging)
-            buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_staging_address)
         }
@@ -191,8 +175,6 @@ android {
 //            pseudoLocalesEnabled true
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_release)
-            buildConfigField("boolean", "IS_DEBUG", "false")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_release_address)
         }
@@ -211,8 +193,6 @@ android {
 //            pseudoLocalesEnabled false
             signingConfig signingConfigs.lengjiye
 
-            buildConfigField("String", "ENV_NAME", env_name_release)
-            buildConfigField("boolean", "IS_DEBUG", "true")
             buildConfigField("String", "BUILD_TIME", buildTime)
             buildConfigField("String", "SERVICE_ADDRESS", server_release_address)
         }
@@ -234,4 +214,9 @@ dependencies {
     implementation project(':library:mvp_basic')
     implementation project(':library:tools')
     implementation project(':library:app_library')
+    implementation project(':library:retrofit')
+
+    implementation "com.squareup.retrofit2:retrofit:${cfgs.retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-gson:${cfgs.retrofit_version}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${cfgs.retrofit_version}"
 }

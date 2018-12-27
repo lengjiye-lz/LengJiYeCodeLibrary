@@ -9,12 +9,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * 类描述:
+ * MD5 操作类
  * 创建人: lz
  * 创建时间: 2018/12/26
  * 修改备注:
  */
 public class MD5Tool {
+
+
+    private MD5Tool() {
+        /* cannot be instantiated */
+        throw new UnsupportedOperationException("cannot be instantiated");
+    }
 
 
     /**

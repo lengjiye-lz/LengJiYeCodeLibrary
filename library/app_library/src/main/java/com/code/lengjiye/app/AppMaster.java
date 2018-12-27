@@ -23,6 +23,10 @@ public class AppMaster implements IApp {
 
     private IApp iApp;
 
+    public void setApp(IApp app) {
+        this.iApp = app;
+    }
+
     @Override
     public Context getAppContext() {
         if (iApp == null) {
@@ -80,10 +84,10 @@ public class AppMaster implements IApp {
     }
 
     @Override
-    public String getRunEnv() {
+    public String getBuildType() {
         if (iApp == null) {
             return "";
         }
-        return iApp.getRunEnv();
+        return iApp.getBuildType();
     }
 }

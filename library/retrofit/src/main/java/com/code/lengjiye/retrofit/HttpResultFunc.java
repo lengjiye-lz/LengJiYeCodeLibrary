@@ -1,9 +1,10 @@
 package com.code.lengjiye.retrofit;
 
-import android.arch.core.util.Function;
 
 import com.google.gson.Gson;
 import com.lengjiye.tools.StringTool;
+
+import io.reactivex.functions.Function;
 
 /**
  * 类描述:

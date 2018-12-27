@@ -28,7 +28,9 @@ import okhttp3.ResponseBody;
 import okio.Buffer;
 
 /**
- * 类描述:
+ * 服务器返回数据处理
+ * <p>
+ * 拦截器
  * 创建人: lz
  * 创建时间: 2018/12/26
  * 修改备注:
@@ -66,6 +68,7 @@ public class SignInterceptor implements Interceptor {
         long responseTime = System.nanoTime() - startTime;
 
         MediaType mediaType = response.body().contentType();
+        // 服务器返回的值
         String content = response.body().string();
         //如果这一次的请求响应时间小于上一次，则更新本地维护的时间
         if (responseTime <= minResponseTime) {
@@ -86,6 +89,11 @@ public class SignInterceptor implements Interceptor {
         content = content.replace(",\"data\":\"\"", "");
         content = content.replace(",\"data\":{}", "");
         content = content.replace(",\"data\":[]", "");
+
+//        Gson gson = new GsonBuilder().create();
+////
+////        HashMap<String , String > hashMap = new HashMap<>();
+////        hashMap.put("test", content);
 
         if (AppMaster.getInstance().getIsDebug()) {
             Log.e(TAG, "#############################################################");
@@ -127,7 +135,7 @@ public class SignInterceptor implements Interceptor {
 //        requestBuilder.addHeader("X-Branch",
 //                SPTool.put(AppMaster.getInstance().getAppContext(), AppConstants.ENV_BRANCH, "working"););
         // 运行环境
-        requestBuilder.addHeader("X-Env", AppMaster.getInstance().getRunEnv());
+        requestBuilder.addHeader("X-Env", AppMaster.getInstance().getBuildType());
         requestBuilder.addHeader("Auth-TimeZone", AppTool.getTimeZone());
 
         requestBuilder.addHeader("DPR", String.valueOf(ScreenTool.getScreenDensity(AppMaster.getInstance().getAppContext())));// 设备屏幕 DPR

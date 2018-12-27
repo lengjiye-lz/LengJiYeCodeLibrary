@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Tools</string>
+
+    <string name="a_1439">网络中断，请检查您的网络状态</string>
+    <string name="a_0210">网络不给力</string>
+    <string name="a_0977">请求超时。</string>
+    <string name="a_0014">未知错误</string>
 </resources>

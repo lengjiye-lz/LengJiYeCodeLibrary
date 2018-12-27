@@ -4,11 +4,11 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
 import com.lengjiye.tools.proxy.NoDoubleClickProxy;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ import java.util.Locale;
  * 创建时间: 2018/12/13
  * 修改备注:
  */
-public abstract class BasicActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class BasicActivity extends RxAppCompatActivity implements View.OnClickListener {
 
     /**
      * 第一次调用

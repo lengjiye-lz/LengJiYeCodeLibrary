@@ -55,4 +55,5 @@ dependencies {
     api "com.google.code.gson:gson:${cfgs.gson}"
     implementation project(':library:tools')
     implementation project(':library:app_library')
+    implementation project(':library:mvp_basic')
 }
