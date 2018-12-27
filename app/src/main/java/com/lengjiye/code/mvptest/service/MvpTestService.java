@@ -2,12 +2,9 @@ package com.lengjiye.code.mvptest.service;
 
 import com.code.lengjiye.retrofit.BasicHttpResult;
 import com.code.lengjiye.retrofit.constant.ServerConstants;
-import com.lengjiye.code.mvptest.bean.PlayHomeFeedData;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
 
 /**
  * 类描述:
@@ -17,21 +14,21 @@ import retrofit2.http.POST;
  */
 public interface MvpTestService {
 
-//    /**
-//     * 登录态修改密码获取验证码
-//     *
-//     * @return
-//     */
-//    @GET(ServerConstants.DOWNLOAD_LOG)
-//    Observable<BasicHttpResult<Object>> sendCheckMobile();
-
     /**
-     * 获取陪玩首页feed流数据
+     * 登录态修改密码获取验证码
      *
-     * @param body
      * @return
      */
-    @POST(ServerConstants.PLAY_GOD_GAME_FEEDS)
-    Observable<BasicHttpResult<PlayHomeFeedData>> sendCheckMobile(@Body RequestBody body);
+    @GET(ServerConstants.DOWNLOAD_LOG)
+    Observable<BasicHttpResult<Object>> sendCheckMobile();
+
+//    /**
+//     * 获取陪玩首页feed流数据
+//     *
+//     * @param body
+//     * @return
+//     */
+//    @POST(ServerConstants.PLAY_GOD_GAME_FEEDS)
+//    Observable<BasicHttpResult<PlayHomeFeedData>> sendCheckMobile(@Body RequestBody body);
 
 }

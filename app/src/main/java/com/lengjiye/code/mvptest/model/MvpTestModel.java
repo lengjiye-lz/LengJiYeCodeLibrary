@@ -46,7 +46,7 @@ public class MvpTestModel extends BasicModel {
         Map map = new HashMap();
         map.put("p", 1);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json;charset=UTF-8"), new Gson().toJson(map));
-        Observable observable = getService().sendCheckMobile(body).map(new HttpResultFunc<>());
+        Observable observable = getService().sendCheckMobile().map(new HttpResultFunc<>());
         makeSubscribe(provider, observable, observer);
     }
 }

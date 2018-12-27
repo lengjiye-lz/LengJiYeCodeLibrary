@@ -28,7 +28,7 @@ public class LogTool {
      * @param message
      */
     public static void v(String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
             logV(tag, getLogInfo(stackTraceElement) + message);
@@ -39,7 +39,7 @@ public class LogTool {
      * @param message
      */
     public static void v(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             logV(tag, getLogInfo(stackTraceElement) + message);
         }
@@ -49,7 +49,7 @@ public class LogTool {
      * @param message
      */
     public static void logV(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             Log.v(tag, message);
         }
     }
@@ -58,7 +58,7 @@ public class LogTool {
      * @param message
      */
     public static void d(String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
             logD(tag, getLogInfo(stackTraceElement) + message);
@@ -69,7 +69,7 @@ public class LogTool {
      * @param message
      */
     public static void d(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             logD(tag, getLogInfo(stackTraceElement) + message);
         }
@@ -79,7 +79,7 @@ public class LogTool {
      * @param message
      */
     public static void logD(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             Log.d(tag, message);
         }
     }
@@ -88,7 +88,7 @@ public class LogTool {
      * @param message
      */
     public static void i(String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
             logI(tag, getLogInfo(stackTraceElement) + message);
@@ -99,7 +99,7 @@ public class LogTool {
      * @param message
      */
     public static void i(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             logI(tag, getLogInfo(stackTraceElement) + message);
         }
@@ -109,7 +109,7 @@ public class LogTool {
      * @param message
      */
     public static void logI(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             Log.i(tag, message);
         }
     }
@@ -118,7 +118,7 @@ public class LogTool {
      * @param message
      */
     public static void w(String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
             logW(tag, getLogInfo(stackTraceElement) + message);
@@ -129,7 +129,7 @@ public class LogTool {
      * @param message
      */
     public static void w(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             logW(tag, getLogInfo(stackTraceElement) + message);
         }
@@ -139,7 +139,7 @@ public class LogTool {
      * @param message
      */
     public static void logW(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             Log.w(tag, message);
         }
     }
@@ -148,7 +148,7 @@ public class LogTool {
      * @param message
      */
     public static void e(String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             String tag = getDefaultTag(stackTraceElement);
             logE(tag, getLogInfo(stackTraceElement) + message);
@@ -159,7 +159,7 @@ public class LogTool {
      * @param message
      */
     public static void e(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
             logE(tag, getLogInfo(stackTraceElement) + message);
         }
@@ -169,7 +169,7 @@ public class LogTool {
      * @param message
      */
     public static void logE(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (AppMaster.getInstance().getIsDebug()) {
             Log.e(tag, message);
         }
     }

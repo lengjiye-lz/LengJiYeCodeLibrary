@@ -167,7 +167,7 @@ public class LoadingObserver<T> implements Observer<T> {
                 errorMsg = apiException.getErrorMsg();
             }
         } else if (e instanceof JsonSyntaxException) {
-            errorMsg = ((JsonSyntaxException) e).getMessage();
+            errorMsg = e.getMessage();
             apiException = new ApiException(-10003, errorMsg, null);
             errorCode = apiException.getErrorCode();
         } else if (e instanceof ApiException) {

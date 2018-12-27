@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.code.lengjiye.app.AppMaster;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lengjiye.tools.AppTool;
 import com.lengjiye.tools.LogTool;
 import com.lengjiye.tools.MD5Tool;
@@ -14,6 +16,7 @@ import com.lengjiye.tools.screen.ScreenTool;
 
 import java.io.IOException;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -90,10 +93,10 @@ public class SignInterceptor implements Interceptor {
         content = content.replace(",\"data\":{}", "");
         content = content.replace(",\"data\":[]", "");
 
-//        Gson gson = new GsonBuilder().create();
-////
-////        HashMap<String , String > hashMap = new HashMap<>();
-////        hashMap.put("test", content);
+        Gson gson = new GsonBuilder().create();
+
+        HashMap<String , String > hashMap = new HashMap<>();
+        hashMap.put("test", content);
 
         if (AppMaster.getInstance().getIsDebug()) {
             Log.e(TAG, "#############################################################");
@@ -105,7 +108,7 @@ public class SignInterceptor implements Interceptor {
 
 //        interceptStatusCode(content);
 
-        return response.newBuilder().body(ResponseBody.create(mediaType, content)).build();
+        return response.newBuilder().body(ResponseBody.create(mediaType, gson.toJson(hashMap))).build();
 //        } else {
 //            return chain.proceed(request);
 //        }
