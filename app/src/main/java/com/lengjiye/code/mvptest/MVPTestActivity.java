@@ -58,7 +58,8 @@ public class MVPTestActivity extends BasicMvpActivity<MvpTestContract.View, MvpT
                 break;
 
             case R.id.button1:
-                testRxjava();
+//                testRxjava();
+                test1();
                 break;
         }
     }
@@ -89,7 +90,6 @@ public class MVPTestActivity extends BasicMvpActivity<MvpTestContract.View, MvpT
                 e.onNext(2);
                 LogTool.e("Observable emit 3" + "\n");
                 e.onNext(3);
-                e.onComplete();
                 LogTool.e("Observable emit 4" + "\n");
                 e.onNext(4);
             }
@@ -124,5 +124,53 @@ public class MVPTestActivity extends BasicMvpActivity<MvpTestContract.View, MvpT
                 LogTool.e("onComplete" + "\n");
             }
         });
+    }
+
+    /**
+     * rxjava2 分开步骤
+     */
+    private void test1() {
+        Observable<Integer> objectObservable = Observable.create(new ObservableOnSubscribe<Integer>() {
+
+            // ObservableEmitter： Emitter是发射器的意思，那就很好猜了，这个就是用来发出事件的，
+            // 它可以发出三种类型的事件，通过调用emitter的onNext(T value)、onComplete()和
+            // onError(Throwable error)就可以分别发出next事件、complete事件和error事件。
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                e.onNext(1);
+                LogTool.e("subscribe：" + 1);
+                e.onNext(2);
+                LogTool.e("subscribe：" + 2);
+                e.onNext(3);
+                LogTool.e("subscribe：" + 3);
+                e.onComplete();
+                LogTool.e("subscribe：" + 4);
+                e.onNext(4);
+            }
+        });
+
+        Observer<Integer> observer = new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                LogTool.e("Disposable:" + d);
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                LogTool.e("onNext:" + integer);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogTool.e("onError");
+            }
+
+            @Override
+            public void onComplete() {
+                LogTool.e("onComplete");
+            }
+        };
+
+        objectObservable.subscribe(observer);
     }
 }
