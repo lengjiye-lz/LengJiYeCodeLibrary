@@ -104,6 +104,7 @@
         <activity android:name=".activity.WebpAnimationActivity"></activity>
         <activity android:name=".activity.MethodTestActivity"></activity>
         <activity android:name=".mvptest.MVPTestActivity"></activity>
+        <activity android:name=".activity.RxJava2TestActivity"></activity>
 
         <service
             android:name=".autoinstall.AutoInstallService"

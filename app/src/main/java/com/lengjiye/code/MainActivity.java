@@ -12,6 +12,7 @@ import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.activity.AutoTestActivity;
 import com.lengjiye.code.activity.DeviceInformationActivity;
 import com.lengjiye.code.activity.NotificationActivity;
+import com.lengjiye.code.activity.RxJava2TestActivity;
 import com.lengjiye.code.activity.WebpAnimationActivity;
 import com.lengjiye.code.mvptest.MVPTestActivity;
 
@@ -40,7 +41,7 @@ public class MainActivity extends BasicMvpActivity {
         super.setListener();
         setOnClickListener(findViewById(R.id.button), findViewById(R.id.button1),
                 findViewById(R.id.button2), findViewById(R.id.button3),
-                findViewById(R.id.button4));
+                findViewById(R.id.button4), findViewById(R.id.button5));
         setNotificationChannel();
     }
 
@@ -66,6 +67,10 @@ public class MainActivity extends BasicMvpActivity {
 
             case R.id.button4:
                 startActivity(new Intent(MainActivity.this, MVPTestActivity.class));
+                break;
+
+            case R.id.button5:
+                startActivity(new Intent(MainActivity.this, RxJava2TestActivity.class));
                 break;
 
             default:
