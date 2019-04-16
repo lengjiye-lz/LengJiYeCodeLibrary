@@ -1,6 +1,8 @@
 package com.lengjiye.code.activity;
 
 
+import android.content.res.ColorStateList;
+import android.icu.text.Collator;
 import android.util.Log;
 import android.view.View;
 
@@ -8,8 +10,11 @@ import com.code.lengjiye.mvp.BasicMvpActivity;
 import com.code.lengjiye.mvp.presenter.MvpPresenter;
 import com.lengjiye.code.R;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
@@ -18,11 +23,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.BooleanSupplier;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -62,9 +70,70 @@ public class RxJava2TestActivity extends BasicMvpActivity {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.button1:
-                test12();
+                test18();
                 break;
         }
+    }
+
+    private void test18() {
+        // window 和 buffer 函数差不多，但是不是发送原始数据，而是发送分组的数据
+        Observable.range(1, 10).window(3).subscribe(integerObservable -> {
+            Log.e("lz", "integer:" + integerObservable.hashCode());
+            integerObservable.subscribe(integer -> Log.e("lz", "integer:" + integer));
+        });
+    }
+
+    private void test17() {
+        // scan 累加函数，函数的结果作为第一个变量，继续和剩余变量进行运算，直到结束
+        Observable.range(2, 5).map(integer -> Float.valueOf(integer)).scan((integer, integer2) -> {
+            Log.e("lz", "integer:" + integer);
+            Log.e("lz", "integer2:" + integer2);
+            return (integer % integer2);
+        }).subscribe(integer -> Log.e("lz", "结果:" + integer));
+    }
+
+    private void test16() {
+        // groupBy 指定元素分组，可以用来根据指定的条件将元素分组。
+        // 首先将两组元素合并成一个组元素，然后按照整数进行分组，然后再把分好组的元素进行输出
+        Observable<GroupedObservable<Integer, Integer>> groupedObservableObservable =
+                Observable.concat(Observable.range(1, 5), Observable.range(2, 8)).
+                        groupBy(integer -> integer);
+
+        Observable.concat(groupedObservableObservable).subscribe(integer ->
+                Log.e("lz", "integer:" + integer));
+    }
+
+    private void test15() {
+        // buffer 将整个数据流分组，buffer相当于缓存区，当缓存区慢了或者剩余不足填满缓存区时，发射数据
+        Observable.range(1, 7).buffer(3).subscribe(new Consumer<List<Integer>>() {
+            @Override
+            public void accept(List<Integer> integers) throws Exception {
+                Log.e("lz", "integers:" + Arrays.toString(integers.toArray()));
+                Observable.fromIterable(integers).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.e("lz", "integer:" + integer);
+                    }
+                });
+            }
+        });
+    }
+
+    private void test14() {
+        // 将任意元素转化为Iterable对象，然后再进行处理
+        Observable.range(1, 5).flatMapIterable((Function<Integer, Iterable<String>>) integer ->
+                // 转化为String队列
+                Collections.singletonList(String.valueOf(integer))).subscribe(s ->
+                Log.e("lz", "s:" + s));
+    }
+
+    private void test13() {
+        // flatMap 把多个请求合并成一个结果返回，不能保证结果的顺序和之前请求的顺序一定相同
+        Observable.range(1, 50).flatMap((Function<Integer, ObservableSource<String>>) integer ->
+                Observable.just(integer.toString())).subscribe(o -> Log.e("lz", "o:" + o));
+        // concatMap 和 flatMap 对应，保证返回的顺序和请求的顺序一定相同
+        Observable.range(1, 50).concatMap((Function<Integer, ObservableSource<String>>) integer ->
+                Observable.just(String.valueOf(integer))).subscribe(o -> Log.e("lz", "o1111:" + o));
     }
 
 
