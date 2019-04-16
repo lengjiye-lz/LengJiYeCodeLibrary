@@ -75,6 +75,7 @@ public class RxJava2TestActivity extends BasicMvpActivity {
         }
     }
 
+
     private void test18() {
         // window 和 buffer 函数差不多，但是不是发送原始数据，而是发送分组的数据
         Observable.range(1, 10).window(3).subscribe(integerObservable -> {
