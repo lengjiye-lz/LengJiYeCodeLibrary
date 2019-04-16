@@ -75,8 +75,8 @@ public class RxJava2TestActivity extends BasicMvpActivity {
             return integer.toString();
         }).subscribe(s -> Log.e("lz", "s:" + s));
 
-
-        Observable.just(new Date()).cast(Long.class).subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+        // cast 将原始数据每一项强制装换为指定的数据，如果不能转换会报错，然后再发射数据
+        Observable.just(new Date()).cast(Object.class).subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
     }
 
 
