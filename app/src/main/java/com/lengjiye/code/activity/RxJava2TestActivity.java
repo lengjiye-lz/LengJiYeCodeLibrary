@@ -26,10 +26,12 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.BooleanSupplier;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -70,10 +72,142 @@ public class RxJava2TestActivity extends BasicMvpActivity {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.button1:
-                test18();
+                test27();
                 break;
         }
     }
+
+
+    private void test27() {
+        // sample  获取每个时间片最后一个数据进行发送
+        Observable.interval(60, TimeUnit.MILLISECONDS)
+                .sample(500, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+    }
+
+    private void test26() {
+        // debounce 限制发送数据过快，在指定的一段时间还没有发射数据时才发射数据
+        Observable.interval(600, TimeUnit.MILLISECONDS)
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+    }
+
+    private void test25() {
+        // 按照时间对数据源进行分片
+        // throttleLast 获取每个时间片最后一个数据进行发送
+        // throttleFirst 获取每个时间片第一个数据进行发送
+        // throttleLatest 发射距离指定时间片最近的那个数据进行发送
+        // throttleWithTimeout 在指定的一段时间内没有数据发射时会发射一个数据，
+        // 如果在一个时间片达到之前，发射的数据之后又紧跟着发射了一个数据，那么这个时间片之内之前发射的数据会被丢掉
+        Observable.interval(80, TimeUnit.MICROSECONDS)
+                .throttleLast(500, TimeUnit.MICROSECONDS)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+
+        Observable.interval(80, TimeUnit.MICROSECONDS)
+                .throttleFirst(500, TimeUnit.MICROSECONDS)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+
+        Observable.interval(501, TimeUnit.MICROSECONDS)
+                .throttleWithTimeout(500, TimeUnit.MICROSECONDS)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+    }
+
+    private void test24() {
+        // ignoreElements 过滤掉所有源产生的结果，只返回 Complete 和 error 回调
+        Observable.range(1, 5).ignoreElements()
+                .subscribe(() -> Log.e("lz", "Complete:"),
+                        throwable -> Log.e("lz", "error:"));
+    }
+
+    private void test23() {
+        // 与 skip 相对，只选择前面n项
+        Observable.range(1, 5).take(2)
+                .subscribe(integer -> Log.e("lz", "integer2:" + integer));
+
+        // take 和 takeLast
+        long sys = System.currentTimeMillis();
+        // 计时5秒钟,只输出前2秒的数据然后结束
+        long finalSys = sys;
+        Observable.range(1, 5).repeatUntil(() ->
+                System.currentTimeMillis() > TimeUnit.SECONDS.toMillis(5) + finalSys)
+                .take(2, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        Log.e("lz", "integer3:" + integer);
+                    }
+                });
+        // 计时执行5秒钟，只输最后2秒的数据
+        sys = System.currentTimeMillis();
+        long finalSys1 = sys;
+        Observable.range(1, 5).repeatUntil(() ->
+                System.currentTimeMillis() > TimeUnit.SECONDS.toMillis(5) + finalSys1)
+                .takeLast(2, TimeUnit.SECONDS)
+                .subscribe(integer -> Log.e("lz", "integer4:" + integer));
+    }
+
+    private void test22() {
+        // skip 过滤掉前面n项
+        Observable.range(1, 5).skip(2)
+                .subscribe(integer -> Log.e("lz", "integer1:" + integer));
+        // 与 skip 相对，只选择前面n项
+        Observable.range(1, 5).take(2)
+                .subscribe(integer -> Log.e("lz", "integer2:" + integer));
+
+        // 与 skip 相对，过滤掉后面几项
+        Observable.range(1, 5).skipLast(2)
+                .subscribe(integer -> Log.e("lz", "integer5:" + integer));
+
+        // skip 和 skipLast
+        long sys = System.currentTimeMillis();
+        // 2秒钟之后开始执行,执行5秒钟之后停止
+        long finalSys = sys;
+        Observable.range(1, 5).repeatUntil(() ->
+                System.currentTimeMillis() > TimeUnit.SECONDS.toMillis(5) + finalSys)
+                .skip(2, TimeUnit.SECONDS)
+                .subscribe(integer -> Log.e("lz", "integer3:" + integer));
+
+        // 计时执行5秒钟，最后2秒不再输出数据，5秒钟之后执行结束
+        sys = System.currentTimeMillis();
+        long finalSys1 = sys;
+        Observable.range(1, 5).repeatUntil(() ->
+                System.currentTimeMillis() > TimeUnit.SECONDS.toMillis(5) + finalSys1)
+                .skipLast(2, TimeUnit.SECONDS)
+                .subscribe(integer -> Log.e("lz", "integer4:" + integer));
+    }
+
+    private void test21() {
+        // distinct 过滤掉重复元素
+        // 输出结果为1234567
+        Observable.just(1, 2, 3, 4, 5, 5, 5, 6, 7, 6).distinct()
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+
+        // distinctUntilChanged 和 distinct 类似，不同的是只能过滤掉相邻重复的元素
+        // 输出结果为12345676
+        Observable.just(1, 2, 3, 4, 5, 5, 5, 6, 7, 6).distinctUntilChanged()
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+    }
+
+    private void test20() {
+        // element 根据条件获取数据源指定位置的数据
+        // 会输出第二位数字
+        Observable.range(1, 10).elementAt(1)
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+
+        Observable.range(1, 10).lastElement()
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+
+        Observable.range(1, 10).firstElement()
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+    }
+
+    private void test19() {
+        // filter 指定条件过滤数据源，true返回，false过滤掉
+        Observable.range(1, 10).filter(integer -> integer > 5)
+                .subscribe(integer -> Log.e("lz", "integer:" + integer));
+    }
+
+    /******************************************变换型操作符***********************************************/
 
     private void test18() {
         // window 和 buffer 函数差不多，但是不是发送原始数据，而是发送分组的数据
