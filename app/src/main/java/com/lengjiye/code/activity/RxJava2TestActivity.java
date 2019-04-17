@@ -1,8 +1,6 @@
 package com.lengjiye.code.activity;
 
 
-import android.content.res.ColorStateList;
-import android.icu.text.Collator;
 import android.util.Log;
 import android.view.View;
 
@@ -23,15 +21,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.BooleanSupplier;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -72,9 +65,20 @@ public class RxJava2TestActivity extends BasicMvpActivity {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.button1:
-                test27();
+                test28();
                 break;
         }
+    }
+
+    private void test28(){
+        // startWith 在指定的数据源的前面插入数据
+        Observable.range(1,5)
+                .startWith(0)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
+
+        Observable.range(1,5)
+                .startWithArray(0, -1)
+                .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
     }
 
 
