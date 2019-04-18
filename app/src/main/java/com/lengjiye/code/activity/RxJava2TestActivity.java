@@ -19,10 +19,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
@@ -65,18 +67,100 @@ public class RxJava2TestActivity extends BasicMvpActivity {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.button1:
-                test28();
+                test31();
+                test32();
                 break;
         }
     }
 
-    private void test28(){
+    private void test32() {
+        // combineLatest 拼接最新发射的两个数据
+        // 第一组数据发射的时候，第二个还没有发射，所以不能拼接，直到第一组数据发射到最后一个，第二组数据才发射，
+        // 所以发射出的第一组数据是6*6，第二组数6*7...以此类推
+        // 输出结果为 36 42 48 54 60
+        Observable.combineLatest(Observable.range(1, 6), Observable.range(6, 5),
+                (integer, integer2) -> {
+                    Log.e("lz", "integer:" + integer);
+                    Log.e("lz", "integer2:" + integer2);
+                    return integer * integer2;
+                })
+                .subscribe(integer -> Log.e("lz", "integer222222222222:" + integer));
+    }
+
+    private void test31() {
+        // zip 按照指定规则合并数据，两个数据源的数量不同，没有对应位置的数据源不参与运算
+        Observable.zip(Observable.range(1, 6), Observable.range(6, 5),
+                (integer, integer2) -> {
+                    Log.e("lz", "integer:" + integer);
+                    Log.e("lz", "integer2:" + integer2);
+                    return integer * integer2;
+                })
+                .subscribe(integer -> Log.e("lz", "integer111111111111111:" + integer));
+    }
+
+    private void test30() {
+        // concat 合并数据，会严格按照数据源的顺序发射
+        Observable.concat(Observable.range(1, 5), Observable.range(3, 10)).subscribe(integer ->
+                Log.e("lz", "integer:" + integer));
+
+        // concat 合并多个数据源，会严格按照数据源的顺序发射
+        Observable.concatArray(Observable.range(1, 5), Observable.range(3, 10)
+                , Observable.range(3, 10), Observable.range(3, 10))
+                .subscribe(integer -> Log.e("lz", "integer2:" + integer));
+
+        // concatDelayError 合并多个数据源，不能保证发射的顺序，
+        // 和 concat 的区别是 concatDelayError 等数据全部发射完毕才发射错误信息，而且无论出现多少错误，都只发射一次，
+        // concat 是出现错误马上报错，并停止发射数据
+        Log.e("lz", "开始:");
+        Observable.concatDelayError(Observable.create(e -> {
+            Thread.sleep(2000);
+            e.onError(new Exception("error"));
+        })).subscribe(integer -> Log.e("lz", "integer2:" + integer),
+                throwable -> Log.e("lz", "throwable:" + throwable.getMessage()));
+        Log.e("lz", "结束:");
+
+        // concatArrayEager 和 concatArray 类似， concatArrayEager 如果有观察者订阅了他之后，
+        // 就相当于订阅了他所有的 ObservableSource ,并且先缓存起来，然后按照顺序把他们发射出来
+        Observable.concatArrayEager(Observable.range(1, 5), Observable.range(3, 10)
+                , Observable.range(3, 10), Observable.range(3, 10))
+                .subscribe(integer -> {
+                    Log.e("lz", "integer:" + integer);
+                });
+    }
+
+    private void test29() {
+        // merge 合并两个数据源，不能保证发射的顺序
+        Observable.merge(Observable.range(1, 5), Observable.range(3, 10))
+                .subscribe(integer -> Log.e("lz", "integer1:" + integer));
+
+        // merge 合并多个数据源，不能保证发射的顺序
+        Observable.mergeArray(Observable.range(1, 5), Observable.range(3, 10)
+                , Observable.range(3, 10), Observable.range(3, 10))
+                .subscribe(integer -> Log.e("lz", "integer2:" + integer));
+
+
+        // mergeDelayError 合并多个数据源，不能保证发射的顺序，
+        // 和 merge 的区别是 mergeDelayError 等数据全部发射完毕才发射错误信息，而且无论出现多少错误，都只发射一次，
+        // merge 是出现错误马上报错，并停止发射数据
+        Log.e("lz", "开始:");
+        Observable.mergeDelayError(Observable.range(1, 5),
+                Observable.range(3, 10).repeat(2),
+                Observable.create(e -> {
+                    Thread.sleep(2000);
+                    e.onError(new Exception("error"));
+                }))
+                .subscribe(integer -> Log.e("lz", "integer2:" + integer),
+                        throwable -> Log.e("lz", "throwable:" + throwable.getMessage()));
+        Log.e("lz", "结束:");
+    }
+
+    private void test28() {
         // startWith 在指定的数据源的前面插入数据
-        Observable.range(1,5)
+        Observable.range(1, 5)
                 .startWith(0)
                 .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
 
-        Observable.range(1,5)
+        Observable.range(1, 5)
                 .startWithArray(0, -1)
                 .subscribe(aLong -> Log.e("lz", "aLong:" + aLong));
     }
